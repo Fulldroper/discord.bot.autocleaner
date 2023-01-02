@@ -1,7 +1,7 @@
 // aplication runner
 (async () => {
   // env configuration
-  process.env.Production || await require('dotenv').config({ debug: false })
+  process.env.NODE_ENV || await require('dotenv').config({ debug: false })
 
   // import configs
   const { config, description } = await require("./package.json")
