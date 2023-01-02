@@ -15,16 +15,33 @@ module.exports = class {
     this.obj.on("reconnecting", () => console.log('[redis]: reconnecting'))
   }
   async get(key) {
-    return JSON.parse(await this.obj.get(key))
+    return JSON.parse((await this.obj.get(key)))
   }
-  async set(key, value) {
+  async set(key, value, EX) {
     const o = JSON.parse(await this.obj.get(key)) || {};
 
     for (const key in value) {
       o[key] = value[key]
     }
 
-    this.obj.set(key, JSON.stringify(o))
+    this.obj.set(key, JSON.stringify(o), EX && { EX } )
+  }
+  async setArray(key, value, EX) {
+    this.obj.set(key, JSON.stringify(value), EX && { EX } )
+  }
+  async push(key, value, EX){
+    const o = JSON.parse(await this.obj.get(key)) || [];
+    o.push(value)
+
+    this.obj.set(key, JSON.stringify(o), EX && { EX } )
+  }
+  async filter(key, cb, EX){
+    const o = JSON.parse(await this.obj.get(key)) || [];  
+
+    this.obj.set(key, JSON.stringify(o.filter(cb)), EX && { EX } )
+  }
+  async clear(key){
+    this.obj.del(key)
   }
   connect() {
     if (this.isConnected) return;
