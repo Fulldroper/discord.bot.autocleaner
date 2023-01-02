@@ -4,7 +4,7 @@ module.exports.info = {
   "name": "autoclean",
   "dm_permission": false,
   "type": 1,
-  "description": "Вибрати канал для публікації пропозицій",
+  "description": "Вибрати канал для автоочищення",
   "options": [{
     "name": "channel",
     "description": "Текстовий канал",
